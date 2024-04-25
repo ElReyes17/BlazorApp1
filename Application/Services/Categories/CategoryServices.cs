@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces.Repositories.Categories;
 using Application.Interfaces.Services.Categories;
 using Application.ViewModels.Categories;
+using Domain.Entities;
 
 namespace Application.Services.Categories;
 
@@ -19,7 +20,7 @@ public class CategoryServices : ICategoryServices
 
         var list = get.Select(a => new CategoryViewModel
         {
-            
+            Id = a.Id,
             CategoryName = a.CategoryName
 
         }).ToList();
@@ -33,15 +34,21 @@ public class CategoryServices : ICategoryServices
 
         CategoryViewModel category = new CategoryViewModel
         {
+            Id= id,
             CategoryName = get.CategoryName
         };
 
         return category;
         
     }
-    public Task Add(SaveCategoryViewModel product)
+    public async Task Add(SaveCategoryViewModel product)
     {
-        throw new NotImplementedException();
+        Category newp = new Category();
+
+        product.CategoryName = newp.CategoryName;
+       
+
+        await _repository.Add(newp);
     }
 
 
@@ -50,8 +57,8 @@ public class CategoryServices : ICategoryServices
         throw new NotImplementedException();
     }
 
-    public Task Delete(int id)
+    public async Task Delete(int id)
     {
-        throw new NotImplementedException();
+       await _repository.Delete(id);
     }
 }

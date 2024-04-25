@@ -22,5 +22,15 @@ namespace WebApi.Controllers
             var list = await _services.GetAll();
             return Ok(list);
         }
+        [HttpDelete]
+        [Route("EraseCategories/{id}")]
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _services.Delete(id);
+
+            return Ok();
+        }
+
     }
 }

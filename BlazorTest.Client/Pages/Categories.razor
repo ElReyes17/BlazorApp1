@@ -1,8 +1,96 @@
 ﻿@page "/categories"
+@using System.Net.Http.Formatting
+@using BlazorTest.Client.Models
+
+@inject HttpClient http
+
+<h3 class="mb-3">Categories</h3>
+
+<button class="mb-3 btn btn-primary float-end"> Crear una Categoria</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Category Name</th>
+            <th scope="col">Editar</th>
+            <th scope="col">Borrar</th>
+
+        </tr>
+    </thead>
 
 
-<h3>Categories</h3>
+
+    <tbody>
+        @if (lista != null)
+        {
+            @foreach (var p in lista)
+            {
+                <tr>
+                    <th>@p.id</th>
+                    <td>@p.categoryName</td>
+                    <td>
+                        <button class=" btn btn-outline-primary">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <EditForm Model="jason">
+
+                            <button class="btn btn-outline-danger" @onclick="(()=>Delete(p.id))">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+
+                        </EditForm>
+                    </td>
+
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3">No hay datos disponibles</td>
+            </tr>
+
+        }
+    </tbody>
+</table>
 
 @code {
+    public List<CategoriesJson> lista { get; set; }
+
+    CategoriesJson jason = new CategoriesJson();
+
+    public async Task<List<CategoriesJson>> Get()
+    {
+        try
+        {
+
+            lista = await http.GetFromJsonAsync<List<CategoriesJson>>("api/Category/GetCategory");
+
+            return lista;
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return null;
+        }
+
+
+    }
+
+
+    public async Task Delete(int id)
+    {
+        await http.DeleteAsync($"api/Category/EraseCategories/{id}");
+        await Get();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Get();
+    }
 
 }
