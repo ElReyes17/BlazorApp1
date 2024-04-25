@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.Services.Categories;
 using Application.ViewModels.Categories;
+using Application.ViewModels.Products;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,33 @@ namespace WebApi.Controllers
             var list = await _services.GetAll();
             return Ok(list);
         }
+
+
+        [HttpPost]
+        [Route("PostCategory")]
+
+        public async Task<IActionResult> Post([FromQuery] SaveCategoryViewModel vm)
+        {
+
+            await _services.Add(vm);
+
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("UpdateCategory/{id}")]
+
+        public async Task<IActionResult> Update([FromQuery] SaveCategoryViewModel vm, int id)
+        {
+
+            await _services.Update(vm, id);
+
+            return Ok();
+        }
+
+
+
+
         [HttpDelete]
         [Route("EraseCategories/{id}")]
 

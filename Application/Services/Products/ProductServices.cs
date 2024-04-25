@@ -52,11 +52,11 @@ public class ProductServices : IProductServices
     public async Task Add(SaveProductViewModel product)
     {
         Product newp = new Product();
+         
+        newp.ProductName = product.ProductName;
+        newp.CategoryId = product.CategoryId;
 
-        product.ProductName = newp.ProductName;
-        product.CategoryId = newp.CategoryId;
-
-         await _repository.Add(newp);
+        await _repository.Add(newp);
     }
 
     public async Task Update(SaveProductViewModel product, int id)

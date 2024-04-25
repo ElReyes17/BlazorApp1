@@ -44,17 +44,21 @@ public class CategoryServices : ICategoryServices
     public async Task Add(SaveCategoryViewModel product)
     {
         Category newp = new Category();
-
-        product.CategoryName = newp.CategoryName;
        
+        newp.CategoryName = product.CategoryName;
 
-        await _repository.Add(newp);
+         await _repository.Add(newp);
     }
 
 
-    public Task Update(SaveCategoryViewModel product, int id)
+    public async Task Update(SaveCategoryViewModel product, int id)
     {
-        throw new NotImplementedException();
+        var get = await _repository.GetById(id);
+
+       
+        get.CategoryName = product.CategoryName;
+
+        await _repository.Update(get, id);
     }
 
     public async Task Delete(int id)

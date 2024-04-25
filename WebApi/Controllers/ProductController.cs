@@ -29,10 +29,21 @@ namespace WebApi.Controllers
         [HttpPost]
         [Route("PostProducts")]
 
-        public async Task<IActionResult> Post(SaveProductViewModel vm)
+        public async Task<IActionResult> Post([FromQuery] SaveProductViewModel vm)
         {
            
             await _services.Add(vm);
+
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("UpdateProducts/{id}")]
+
+        public async Task<IActionResult> Update([FromQuery] SaveProductViewModel vm, int id)
+        {
+
+            await _services.Update(vm,id);
 
             return Ok();
         }
